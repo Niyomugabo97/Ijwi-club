@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
+  }
+}
