@@ -1,57 +1,49 @@
-import React, { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
 
+const Home = ({ images = [] }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-const Home = () => {
-  const [images, setImages] = useState([]);
-  const galleryRef = useRef(null);
-
-  // Fetch images from API
+  // Automatically change the image every 3 seconds
   useEffect(() => {
-    fetch("http://localhost:5000/images")
-      .then((res) => res.json())
-      .then((data) => setImages(data.images))
-      .catch((error) => console.error("Error fetching images:", error));
-  }, []);
+    if (images.length === 0) return;
 
-  const scrollLeft = () => {
-    if (galleryRef.current) {
-      galleryRef.current.scrollBy({ left: -300, behavior: "smooth" });
-    }
-  };
+    const intervalId = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 3000);
 
-  const scrollRight = () => {
-    if (galleryRef.current) {
-      galleryRef.current.scrollBy({ left: 300, behavior: "smooth" });
-    }
-  };
+    return () => clearInterval(intervalId);
+  }, [images.length]);
 
   return (
     <div className="home">
       <h1>Welcome to Toastmasters Club, where leaders are made.</h1>
-      <h2>All activities done:</h2>
+      <h2>All activities done in a week:</h2>
       <div className="gallery-container">
-        <button onClick={scrollLeft} className="scroll-button left">
-          <ChevronLeft size={24} />
-        </button>
-        <div ref={galleryRef} className="image-gallery">
+        <div
+          className="image-gallery"
+          style={{
+            transform: `translateX(-${currentIndex * 100}%)`,
+            transition: "transform 1s ease",
+            display: "flex",
+          }}
+        >
           {images.length > 0 ? (
-            images.map((image, index) => (
-              <div key={index} className="image-preview">
+            images.map((image) => (
+              <div key={image.id} className="image-preview">
                 <img
-                  src={`http://localhost:5000${image}`}
-                  alt={`Uploaded ${index + 1}`}
+                  src={image.src}
+                  alt={image.name}
                   className="large-image responsive-image"
+                  width="300"
                 />
+                <p>{image.name}</p>
+                <p>Distribution: {image.distribution}</p> {/* Display distribution */}
               </div>
             ))
           ) : (
             <p>No images available</p>
           )}
         </div>
-        <button onClick={scrollRight} className="scroll-button right">
-          <ChevronRight size={24} />
-        </button>
       </div>
     </div>
   );

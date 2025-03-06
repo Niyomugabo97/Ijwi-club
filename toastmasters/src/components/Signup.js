@@ -31,7 +31,7 @@ const Register = () => {
         <label>Password</label>
         <input type="password" name="password" value={formData.password} onChange={handleChange} required />
 
-        <button className="btn"type="submit">Signup</button>
+        <button className="signup-button"type="submit">Signup</button>
 
         <p>
           Already have an account? <Link to="/Login">Login here</Link>

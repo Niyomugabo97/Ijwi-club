@@ -26,8 +26,8 @@ const Login = () => {
         <input type="text" name="username" value={formData.username} onChange={handleChange} required />
 
         <label>Password</label>
-        <input type="password" name="password" value={formData.password} onChange={handleChange} required /><br></br>
-         <button className="btn2" type="submit">Login</button>
+        <input type="password" name="password" value={formData.password} onChange={handleChange} required />
+         <button className="login-button" type="submit">Login</button>
 
         <p>
           Don't have an account? <Link to="/Register">Register here</Link>
